@@ -438,17 +438,18 @@ esac
 
 ## DEFINE COLORS
 
-bold='[1m'
-black='[30m'
-red='[31m'
-green='[32m'
-yellow='[33m'
-blue='[34m'
-magenta='[35m'
-cyan='[36m'
-white='[37m'
-grey='[90m'
-reset='[0m'
+ESC="$(printf '\033')"
+bold="${ESC}[1m"
+black="${ESC}[30m"
+red="${ESC}[31m"
+green="${ESC}[32m"
+yellow="${ESC}[33m"
+blue="${ESC}[34m"
+magenta="${ESC}[35m"
+cyan="${ESC}[36m"
+white="${ESC}[37m"
+grey="${ESC}[90m"
+reset="${ESC}[0m"
 
 ## USER VARIABLES -- YOU CAN CHANGE THESE
 
