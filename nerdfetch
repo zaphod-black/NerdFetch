@@ -18,6 +18,7 @@ wi=""
 ti=""
 cpui="󰻠"
 gi="󰢮"
+vi="󰘚"
 
 case $1 in
 "-p")
@@ -33,6 +34,7 @@ case $1 in
 	ti=""
 	cpui=""
 	gi=""
+	vi=""
 	;;
 "-c")
 	font=cozette
@@ -46,6 +48,7 @@ case $1 in
 	ti=""
 	cpui=""
 	gi=""
+	vi=""
 	;;
 "-e")
 	font=emoji
@@ -60,6 +63,7 @@ case $1 in
 	ti="💻"
 	cpui="🔥"
 	gi="🎮"
+	vi="💾"
 	;;
 "-v")
 	echo "NerdFetch $version"
@@ -451,7 +455,8 @@ case $ostype in
 		# Intel integrated graphics - no VRAM info needed
 		# (uses shared system memory)
 
-		gpu="${gpu}${vram_info}"
+		# Store VRAM separately instead of appending to GPU
+		vram="${vram_info}"
 
 		# If multiple GPUs, append second one
 		if [ "$gpu_count" -gt 1 ]; then
@@ -477,6 +482,7 @@ case $ostype in
 	;;
 esac
 [ -z "$gpu" ] && gpu="N/A"
+[ -z "$vram" ] && vram=""
 
 ## DEFINE COLORS
 
@@ -519,6 +525,6 @@ ${c0}${cyan}\\ \\ \\______ \\ \\______  /${c0}  ${lc}${wi}  ${ic}${wm}${reset}
 ${c0} ${cyan}\\ \\ \\  / /\\ \\ \\  / / /${c0}   ${lc}${ti}  ${ic}${terminal}${reset}
 ${c0}  ${cyan}\\ \\ \\/ / /\\ \\ \\/ / /${c0}    ${lc}${cpui}  ${ic}${cpu}${reset}
 ${c0}   ${cyan}\\ \\/ / /__\\_\\/ / /${c0}     ${lc}${gi}  ${ic}${gpu}${reset}
-${c0}    ${cyan}\\  / /______\\/ /${c0}
+${c0}    ${cyan}\\  / /______\\/ /${c0}      ${lc}${vi}  ${ic}${vram}${reset}
 ${bright_magenta}MC${c0}   ${cyan}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
 EOF
