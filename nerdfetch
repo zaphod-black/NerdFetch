@@ -406,29 +406,73 @@ esac
 case $ostype in
 *"Linux"*)
 	if command -v lspci >/dev/null 2>&1; then
-		gpu="$(lspci 2>/dev/null | grep -i 'vga\|3d\|display' | sed 's/.*: //' | head -n1)"
-		# Shorten GPU name
+		# Get all GPUs
+		gpu_list="$(lspci 2>/dev/null | grep -i 'vga\|3d\|display' | sed 's/.*: //')"
+		gpu_count="$(echo "$gpu_list" | wc -l)"
+
+		# Process first GPU (or only GPU)
+		gpu="$(echo "$gpu_list" | head -n1)"
 		gpu="${gpu//Intel Corporation /}"
 		gpu="${gpu//NVIDIA Corporation /}"
 		gpu="${gpu//Advanced Micro Devices, Inc. /}"
+		gpu="${gpu//\[AMD\/ATI\] /}"
 		gpu="${gpu// \(rev [0-9a-f]*\)/}"
 
-		# Try to detect VRAM
-		vram=""
-		if [ -d /sys/class/drm/card0/device ]; then
-			vram_bytes="$(cat /sys/class/drm/card0/device/mem_info_vram_total 2>/dev/null || echo 0)"
-			if [ "$vram_bytes" -gt 0 ]; then
-				vram_gb=$((vram_bytes / 1024 / 1024 / 1024))
-				vram=" (${vram_gb}GB)"
+		# Try to detect VRAM for AMD/NVIDIA
+		vram_info=""
+
+		# Check for NVIDIA GPU and nvidia-smi
+		if echo "$gpu" | grep -qi "nvidia\|geforce\|quadro" && command -v nvidia-smi >/dev/null 2>&1; then
+			vram_used="$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits 2>/dev/null | head -n1)"
+			vram_total="$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -n1)"
+			if [ -n "$vram_used" ] && [ -n "$vram_total" ] && [ "$vram_total" -gt 0 ]; then
+				vram_used_gb=$((vram_used / 1024))
+				vram_total_gb=$((vram_total / 1024))
+				vram_percent=$((vram_used * 100 / vram_total))
+				vram_info=" ${vram_used_gb}/${vram_total_gb}GB (${vram_percent}%)"
 			fi
+		# Check for AMD GPU in sysfs
+		elif [ -d /sys/class/drm ]; then
+			for card in /sys/class/drm/card*/device; do
+				if [ -f "$card/mem_info_vram_total" ]; then
+					vram_total="$(cat "$card/mem_info_vram_total" 2>/dev/null || echo 0)"
+					vram_used="$(cat "$card/mem_info_vram_used" 2>/dev/null || echo 0)"
+					if [ "$vram_total" -gt 0 ]; then
+						vram_total_gb=$((vram_total / 1024 / 1024 / 1024))
+						vram_used_gb=$((vram_used / 1024 / 1024 / 1024))
+						vram_percent=$((vram_used * 100 / vram_total))
+						vram_info=" ${vram_used_gb}/${vram_total_gb}GB (${vram_percent}%)"
+						break
+					fi
+				fi
+			done
 		fi
-		gpu="${gpu}${vram}"
+
+		# For Intel integrated, note it's shared memory
+		if echo "$gpu" | grep -qi "intel.*graphics\|uhd.*graphics\|iris" && [ -z "$vram_info" ]; then
+			vram_info=" (Shared)"
+		fi
+
+		gpu="${gpu}${vram_info}"
+
+		# If multiple GPUs, append second one
+		if [ "$gpu_count" -gt 1 ]; then
+			gpu2="$(echo "$gpu_list" | sed -n '2p')"
+			gpu2="${gpu2//Intel Corporation /}"
+			gpu2="${gpu2//NVIDIA Corporation /}"
+			gpu2="${gpu2//Advanced Micro Devices, Inc. /}"
+			gpu2="${gpu2//\[AMD\/ATI\] /}"
+			gpu2="${gpu2// \(rev [0-9a-f]*\)/}"
+			gpu="${gpu} | ${gpu2}"
+		fi
 	else
 		gpu="N/A"
 	fi
 	;;
 *"Darwin"*)
 	gpu="$(system_profiler SPDisplaysDataType 2>/dev/null | awk -F': ' '/Chipset Model/ {print $2; exit}')"
+	vram="$(system_profiler SPDisplaysDataType 2>/dev/null | awk -F': ' '/VRAM/ {print $2; exit}')"
+	[ -n "$vram" ] && gpu="${gpu} (${vram})"
 	;;
 *)
 	gpu="N/A"
