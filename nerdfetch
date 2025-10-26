@@ -313,8 +313,8 @@ case $ostype in
 		MemFree | Buffers | Cached | SReclaimable) mem_used=$((mem_used - val)) ;;
 		esac
 	done </proc/meminfo
-	mem_used=$((mem_used / 1024))
-	mem_full=$((mem_full / 1024))
+	mem_used=$((mem_used / 1024 / 1024))
+	mem_full=$((mem_full / 1024 / 1024))
 	;;
 *"Darwin"*)
 	mem_full=$(($(sysctl -n hw.memsize) / 1024 / 1024))
@@ -349,7 +349,7 @@ case $ostype in
 	mem_used=0
 	;;
 esac
-memstat="${mem_used}/${mem_full} MiB"
+memstat="${mem_used}/${mem_full} GiB"
 mempercent='('$((mem_used * 100 / mem_full))'%)'
 
 ## SHELL DETECTION
@@ -386,6 +386,10 @@ case $ostype in
 *"Linux"*)
 	cpu="$(awk -F': ' '/model name/ {print $2; exit}' /proc/cpuinfo)"
 	cpu="${cpu% @*}"  # Remove @ freq
+	cpu="${cpu//Intel(R) /}"
+	cpu="${cpu//Core(TM) /}"
+	cpu="${cpu// CPU/}"
+	cpu="${cpu//AMD /}"
 	;;
 *"Darwin"*)
 	cpu="$(sysctl -n machdep.cpu.brand_string)"
@@ -403,6 +407,22 @@ case $ostype in
 *"Linux"*)
 	if command -v lspci >/dev/null 2>&1; then
 		gpu="$(lspci 2>/dev/null | grep -i 'vga\|3d\|display' | sed 's/.*: //' | head -n1)"
+		# Shorten GPU name
+		gpu="${gpu//Intel Corporation /}"
+		gpu="${gpu//NVIDIA Corporation /}"
+		gpu="${gpu//Advanced Micro Devices, Inc. /}"
+		gpu="${gpu// \(rev [0-9a-f]*\)/}"
+
+		# Try to detect VRAM
+		vram=""
+		if [ -d /sys/class/drm/card0/device ]; then
+			vram_bytes="$(cat /sys/class/drm/card0/device/mem_info_vram_total 2>/dev/null || echo 0)"
+			if [ "$vram_bytes" -gt 0 ]; then
+				vram_gb=$((vram_bytes / 1024 / 1024 / 1024))
+				vram=" (${vram_gb}GB)"
+			fi
+		fi
+		gpu="${gpu}${vram}"
 	else
 		gpu="N/A"
 	fi
