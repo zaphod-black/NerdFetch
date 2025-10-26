@@ -9,9 +9,21 @@ My personal remix of NerdFetch made with the help of Claude Code, thank you to @
 - [POSIX.1-2017 compliant shell](#shells-tested)
 - [Anything but Windows](#oses-tested)
 
-### To install and run
+### Installation
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/nerdfetch.svg)](https://repology.org/project/nerdfetch/versions)
+#### Build from source
+
+```sh
+# Clone the repository
+git clone https://github.com/zaphod-black/NerdFetch.git
+cd NerdFetch
+
+# Install to /usr/bin
+sudo install -m 755 nerdfetch /usr/bin/nerdfetch
+
+# Run it
+nerdfetch
+```
 
 #### How to switch fonts
 
@@ -19,78 +31,6 @@ My personal remix of NerdFetch made with the help of Claude Code, thank you to @
 - Use `-c` for Cozette
 - Use `-p` for Phosphor
 - Use `-e` for Emojis
-
-#### [Arch Linux (AUR)](https://aur.archlinux.org/packages/nerdfetch/)
-
-```sh
-yay -S nerdfetch # -git
-nerdfetch
-```
-Make sure to replace `yay` with whatever AUR helper you use.
-
-#### [macOS (homebrew)](https://formulae.brew.sh/formula/nerdfetch)
-
-```sh
-brew install nerdfetch
-nerdfetch
-```
-
-#### [Nix](https://search.nixos.org/packages?show=nerdfetch)
-
-```sh
-nix-shell -p nerdfetch
-nerdfetch
-``` 
-
-#### [Gentoo (GURU)](https://gpo.zugaina.org/Overlays/guru/app-misc/nerdfetch)/[LiGurOS](https://gitlab.com/liguros/liguros-repo/-/tree/stable/app-misc/nerdfetch)
-
-Add the GURU overlay: <https://wiki.gentoo.org/wiki/Project:GURU/Information_for_End_Users> (*Not needed for LiGurOS*)
-
-```sh
-emerge nerdfetch
-nerdfetch
-```
-#### [yiffOS](https://packages.yiffos.gay/nerdfetch)
-
-```sh
-bulge install nerdfetch
-nerdfetch
-```
-
-#### [BirbOS](https://github.com/birb-linux/BirbOS-packages/tree/dev/nerdfetch)
-
-```sh
-sudo birb nerdfetch
-nerdfetch
-```
-
-#### Manually
-
-Copy-paste this into your terminal:
-
-```sh
-sudo curl -fsSL https://raw.githubusercontent.com/ThatOneCalculator/NerdFetch/main/nerdfetch -o /usr/bin/nerdfetch
-sudo chmod +x /usr/bin/nerdfetch
-nerdfetch
-```
-
-#### Android with Termux
-
-Copy-paste this into Termux:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/ThatOneCalculator/NerdFetch/main/nerdfetch -o /data/data/com.termux/files/usr/bin/nerdfetch
-chmod a+x /data/data/com.termux/files/usr/bin/nerdfetch
-nerdfetch
-```
-
-#### Run once
-
-Note that this will ***not*** install the program.
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/ThatOneCalculator/NerdFetch/main/nerdfetch | sh
-```
 
 ### Features
 
@@ -135,4 +75,4 @@ curl -fsSL https://raw.githubusercontent.com/ThatOneCalculator/NerdFetch/main/ne
 
 ### Known issue(s)
 
-- `nsh` is currently unsupported (https://github.com/ThatOneCalculator/NerdFetch/issues/46)
+- `nsh` is currently unsupported
