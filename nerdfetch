@@ -491,6 +491,7 @@ magenta="${ESC}[35m"
 cyan="${ESC}[36m"
 white="${ESC}[37m"
 grey="${ESC}[90m"
+bright_magenta="${ESC}[95m"
 reset="${ESC}[0m"
 
 ## USER VARIABLES -- YOU CAN CHANGE THESE
@@ -519,5 +520,5 @@ ${c0} ${cyan}\\ \\ \\  / /\\ \\ \\  / / /${c0}   ${lc}${ti}  ${ic}${terminal}${r
 ${c0}  ${cyan}\\ \\ \\/ / /\\ \\ \\/ / /${c0}    ${lc}${cpui}  ${ic}${cpu}${reset}
 ${c0}   ${cyan}\\ \\/ / /__\\_\\/ / /${c0}     ${lc}${gi}  ${ic}${gpu}${reset}
 ${c0}    ${cyan}\\  / /______\\/ /${c0}
-${c0}MC   ${cyan}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
+${bright_magenta}MC${c0}   ${cyan}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
 EOF
