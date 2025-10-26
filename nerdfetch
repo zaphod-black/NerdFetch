@@ -448,10 +448,8 @@ case $ostype in
 			done
 		fi
 
-		# For Intel integrated, note it's shared memory
-		if echo "$gpu" | grep -qi "intel.*graphics\|uhd.*graphics\|iris" && [ -z "$vram_info" ]; then
-			vram_info=" (Shared)"
-		fi
+		# Intel integrated graphics - no VRAM info needed
+		# (uses shared system memory)
 
 		gpu="${gpu}${vram_info}"
 
@@ -509,21 +507,25 @@ c2="${reset}${yellow}"         # third color
 
 cat <<EOF
 
-${c0}                    .   .${cyan}xXXXX${white}+${c0}.   .                ${nc}${USER}${cyan}@${reset}${hn}${host}${reset}
-${c0}               .   ..   ${cyan}xXXXX${white}+${c0}.-   ..   .           ${lc}${osi}  ${ic}${os}${reset}
-${c0}         .   ..  ... ..${cyan}xXXXX${white}+${c0}. --.. ...  ..   .     ${lc}${ki}  ${ic}${kernel}${reset}
-${c0}     .   ..  ... .....${cyan}xXXXX${white}+${c0}.  -.-..... ...  ..   . ${lc}${ri}  ${ic}${memstat} ${mempercent}${reset}
-${c0}   .   ..  ... ......${cyan}xXXXX${white}+${c0}.  . .--...... ...  ..   ${lc}${pi}  ${ic}${packages} (${manager})${reset}
-${c0}  .   ..  ... ......${cyan}xXXXX${white}+${c0}.    -.- -...... ...  ..  ${lc}${ui}  ${ic}${uptime}${reset}
-${c0} .   ..  ... ......${cyan}xXXXX${white}+${c0}.   .-+-.-.-...... ...  .. ${lc}${si}  ${ic}${shell}${reset}
-${c0} .   ..  ... .....${cyan}xXXXX${white}+${c0}. . --${cyan}xx${white}+${c0}.-.--..... ...  ..  ${lc}${wi}  ${ic}${wm}${reset}
-${c0}.   ..  ... .....${cyan}xXXXX${white}+${c0}. - .-${cyan}xxxx${white}+${c0}- .-- .... ...  .. ${lc}${ti}  ${ic}${terminal}${reset}
-${c0} .   ..  ... ...${cyan}xXXXX${white}+${c0}.  -.-${cyan}xxxxxx${white}+ ${c0}.---... ...  ..  ${lc}${cpui}  ${ic}${cpu}${reset}
-${c0} .   ..  ... ..${cyan}xXXXX${white}+${c0}. .---..${magenta}xxxxxx${white}+${c0}-..--.. ...  ..  ${lc}${gi}  ${ic}${gpu}${reset}
-${c0}  .   ..  ... ${cyan}xXXXX${white}+${c0}. . --....${magenta}xxxxxx${white}+  ${c0}-.- ...  ..
-${c0}   .   ..  ..${cyan}xXXXX${white}+${c0}. . .-......${magenta}xxxxxx${white}+${c0}-. --..  ..
-${c0}     .   .. ${cyan}xXXXXXXXXXXXXXXXXXXX${magenta}xxxxxx${white}+${c0}. .-- ..
-${c0}         . ${cyan}xXXXXXXXXXXXXXXXXXXXXX${magenta}xxxxxx${white}+${c0}.  --
-${c0}           ${cyan}xxxxxxxxxxxxxxxxxxx${magenta}xxxxxxxxxx${white}+${c0}.--
-${c0}            ${cyan}xxxxxxxxxxxxxxxxxxxx${magenta}xxxxxxxxx${white}+${c0}-     ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
+${c0}                ${cyan}______${c0}                      ${nc}${USER}${cyan}@${reset}${hn}${host}${reset}
+${c0}                ${cyan}/     /\\${c0}                    ${lc}${osi}  ${ic}${os}${reset}
+${c0}               ${cyan}/     /${blue}##\\${c0}                   ${lc}${ki}  ${ic}${kernel}${reset}
+${c0}              ${cyan}/     /${blue}####\\${c0}                  ${lc}${ri}  ${ic}${memstat} ${mempercent}${reset}
+${c0}             ${cyan}/     /${blue}######\\${c0}                 ${lc}${pi}  ${ic}${packages} (${manager})${reset}
+${c0}            ${cyan}/     /${blue}########\\${c0}                ${lc}${ui}  ${ic}${uptime}${reset}
+${c0}           ${cyan}/     /${blue}##########\\${c0}               ${lc}${si}  ${ic}${shell}${reset}
+${c0}          ${cyan}/     /${blue}#####${cyan}/\\${magenta}#####\\${c0}              ${lc}${wi}  ${ic}${wm}${reset}
+${c0}         ${cyan}/     /${blue}#####${cyan}/++\\${magenta}#####\\${c0}             ${lc}${ti}  ${ic}${terminal}${reset}
+${c0}        ${cyan}/     /${blue}#####${cyan}/++++\\${magenta}#####\\${c0}            ${lc}${cpui}  ${ic}${cpu}${reset}
+${c0}       ${cyan}/     /${blue}#####${cyan}/\\+++++\\${magenta}#####\\${c0}           ${lc}${gi}  ${ic}${gpu}${reset}
+${c0}      ${cyan}/     /${blue}#####${cyan}/  \\+++++\\${magenta}#####\\${c0}
+${c0}     ${cyan}/     /${blue}#####${cyan}/    \\+++++\\${magenta}#####\\${c0}
+${c0}    ${cyan}/     /${blue}#####${cyan}/      \\+++++\\${magenta}#####\\${c0}
+${c0}   ${cyan}/     /${blue}#####${cyan}/        \\+++++\\${magenta}#####\\${c0}
+${c0}  ${cyan}/     /${blue}#####${cyan}/__________\\+++++\\${magenta}#####\\${c0}
+${c0} ${cyan}/                        \\+++++\\${magenta}#####\\${c0}
+${cyan}/__________________________\\+++++\\${magenta}####/${c0}
+${cyan}\\+++++++++++++++++++++++++++++++++\\${magenta}##/${c0}
+${cyan} \\+++++++++++++++++++++++++++++++++\\/${c0}   ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
+${c0}  \`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`\`${reset}
 EOF
