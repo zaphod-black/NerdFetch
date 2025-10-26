@@ -1,5 +1,5 @@
 # NerdFetch
- A POSIX \*nix (Linux, macOS, Android, BSD, etc) fetch script using Nerdfonts (and others)
+My personal remix of NerdFetch made with the help of Claude Code, thank you to @ThatOneCalculator https://github.com/ThatOneCalculator/NerdFetch
 
 ![Screenshot](screenshot.png)
 
