@@ -509,17 +509,17 @@ c2="${reset}${yellow}"         # third color
 
 cat <<EOF
 
-${c0}      ____________       ${nc}${USER}${red}@${reset}${hn}${host}${reset}
-${c0}     /\\  ________ \\      ${lc}${osi}  ${ic}${os}${reset}
-${c0}    /  \\ \\______/\\ \\     ${lc}${ki}  ${ic}${kernel}${reset}
-${c0}   / /\\ \\ \\  / /\\ \\ \\    ${lc}${ri}  ${ic}${memstat} ${mempercent}${reset}
-${c0}  / / /\\ \\ \\/ / /\\ \\ \\   ${lc}${pi}  ${ic}${packages} (${manager})${reset}
-${c0} / / /__\\_\\/ / /__\\_\\ \\  ${lc}${ui}  ${ic}${uptime}${reset}
-${c0}/ /_/_______/ /________\\  ${lc}${si}  ${ic}${shell}${reset}
-${c0}\\ \\ \\______ \\ \\______  /  ${lc}${wi}  ${ic}${wm}${reset}
-${c0} \\ \\ \\  / /\\ \\ \\  / / /   ${lc}${ti}  ${ic}${terminal}${reset}
-${c0}  \\ \\ \\/ / /\\ \\ \\/ / /    ${lc}${cpui}  ${ic}${cpu}${reset}
-${c0}   \\ \\/ / /__\\_\\/ / /     ${lc}${gi}  ${ic}${gpu}${reset}
-${c0}    \\  / /______\\/ /
-${c0}MC   \\/___________/       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
+${c0}      ${cyan}____________${c0}       ${nc}${USER}${red}@${reset}${hn}${host}${reset}
+${c0}     ${cyan}/\\  ${white}________ ${cyan}\\${c0}      ${lc}${osi}  ${ic}${os}${reset}
+${c0}    ${cyan}/  \\ ${white}\\______${blue}/\\ ${cyan}\\${c0}     ${lc}${ki}  ${ic}${kernel}${reset}
+${c0}   ${cyan}/ ${blue}/\\ ${white}\\ \\  ${blue}/ /\\ ${white}\\ ${blue}\\${c0}    ${lc}${ri}  ${ic}${memstat} ${mempercent}${reset}
+${c0}  ${cyan}/ ${blue}/ /\\ ${white}\\ \\${blue}/ / /\\ ${white}\\ ${blue}\\${c0}   ${lc}${pi}  ${ic}${packages} (${manager})${reset}
+${c0} ${cyan}/ ${blue}/ /__\\_${white}\\${blue}/ / /__\\_${white}\\ ${blue}\\${c0}  ${lc}${ui}  ${ic}${uptime}${reset}
+${c0}${cyan}/ ${blue}/_/_______/ ${magenta}/________${blue}\\${c0}  ${lc}${si}  ${ic}${shell}${reset}
+${c0}${blue}\\ \\ \\______ ${magenta}\\ \\______  /${c0}  ${lc}${wi}  ${ic}${wm}${reset}
+${c0} ${blue}\\ \\ \\  ${magenta}/ /\\ \\ \\  / / /${c0}   ${lc}${ti}  ${ic}${terminal}${reset}
+${c0}  ${blue}\\ \\ ${magenta}\\/ / /\\ \\ \\/ / /${c0}    ${lc}${cpui}  ${ic}${cpu}${reset}
+${c0}   ${blue}\\ ${magenta}\\/ / /__\\_\\/ / /${c0}     ${lc}${gi}  ${ic}${gpu}${reset}
+${c0}    ${magenta}\\  / /______\\/ /${c0}
+${c0}MC   ${magenta}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
 EOF
