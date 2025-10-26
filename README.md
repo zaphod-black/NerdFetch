@@ -1,5 +1,12 @@
-# NerdFetch
+# NerdFetch - ZB Remix
 My personal remix of NerdFetch made with the help of Claude Code, thank you to @ThatOneCalculator https://github.com/ThatOneCalculator/NerdFetch
+
+This remix includes custom features:
+- GPU detection with VRAM usage and percentage
+- CPU, Shell, Window Manager, and Terminal detection
+- Memory display in GiB instead of MiB
+- Custom MC cube ASCII art in teal with bright purple "MC" signature
+- Fixed ANSI color code rendering
 
 ![Screenshot](screenshot.png)
 
@@ -15,8 +22,8 @@ My personal remix of NerdFetch made with the help of Claude Code, thank you to @
 
 ```sh
 # Clone the repository
-git clone https://github.com/zaphod-black/NerdFetch.git
-cd NerdFetch
+git clone https://github.com/zaphod-black/NerdFetch-ZBRemix.git
+cd NerdFetch-ZBRemix
 
 # Install to /usr/bin
 sudo install -m 755 nerdfetch /usr/bin/nerdfetch
