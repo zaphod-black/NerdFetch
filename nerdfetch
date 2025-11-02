@@ -19,6 +19,7 @@ ti=""
 cpui="󰻠"
 gi="󰢮"
 vi="󰘚"
+di="󰋊"
 
 case $1 in
 "-p")
@@ -35,6 +36,7 @@ case $1 in
 	cpui=""
 	gi=""
 	vi=""
+	di=""
 	;;
 "-c")
 	font=cozette
@@ -49,6 +51,7 @@ case $1 in
 	cpui=""
 	gi=""
 	vi=""
+	di=""
 	;;
 "-e")
 	font=emoji
@@ -64,6 +67,7 @@ case $1 in
 	cpui="🔥"
 	gi="🎮"
 	vi="💾"
+	di="💿"
 	;;
 "-v")
 	echo "NerdFetch $version"
@@ -482,7 +486,50 @@ case $ostype in
 	;;
 esac
 [ -z "$gpu" ] && gpu="N/A"
-[ -z "$vram" ] && vram=""
+[ -z "$vram" ] && vram="no vram"
+
+## DISK DETECTION
+
+case $ostype in
+*"Linux"*|*"Darwin"*|*"BSD"*)
+	# Get disk info, filtering out temporary filesystems and snap/loop devices
+	# Only show unique devices to avoid duplicate bind mounts
+	disk_raw="$(df -h 2>/dev/null | awk '
+		NR>1 && $1 ~ /^\/dev\// && $1 !~ /loop|snap/ {
+			device = $1
+			# Skip if we have already seen this device
+			if (seen[device]) next
+			seen[device] = 1
+
+			# Extract used and total size
+			used = $3
+			total = $2
+			mount = $6
+			# Clean up mount point display
+			if (mount == "/") mount = "root"
+			else {
+				gsub(/^\//, "", mount)
+				if (length(mount) > 15) mount = substr(mount, 1, 12) "..."
+			}
+			print mount ": " used "/" total
+		}
+	')"
+
+	# Parse disk info into individual lines
+	disk1="$(echo "$disk_raw" | sed -n '1p')"
+	disk2="$(echo "$disk_raw" | sed -n '2p')"
+	disk3="$(echo "$disk_raw" | sed -n '3p')"
+	disk4="$(echo "$disk_raw" | sed -n '4p')"
+	disk5="$(echo "$disk_raw" | sed -n '5p')"
+	;;
+*)
+	disk1=""
+	disk2=""
+	disk3=""
+	disk4=""
+	disk5=""
+	;;
+esac
 
 ## DEFINE COLORS
 
@@ -526,5 +573,20 @@ ${c0} ${cyan}\\ \\ \\  / /\\ \\ \\  / / /${c0}   ${lc}${ti}  ${ic}${terminal}${r
 ${c0}  ${cyan}\\ \\ \\/ / /\\ \\ \\/ / /${c0}    ${lc}${cpui}  ${ic}${cpu}${reset}
 ${c0}   ${cyan}\\ \\/ / /__\\_\\/ / /${c0}     ${lc}${gi}  ${ic}${gpu}${reset}
 ${c0}    ${cyan}\\  / /______\\/ /${c0}      ${lc}${vi}  ${ic}${vram}${reset}
-${bright_magenta}MC${c0}   ${cyan}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}
 EOF
+
+# Final line of hypercube with first disk (if any)
+if [ -n "$disk1" ]; then
+	printf "${bright_magenta}MC${c0}   ${cyan}\\/___________/${c0}       ${lc}${di}  ${ic}${disk1}${reset}\n"
+else
+	printf "${bright_magenta}MC${c0}   ${cyan}\\/___________/${c0}       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}\n"
+fi
+
+# Additional disks (if any)
+[ -n "$disk2" ] && printf "                              ${lc}${di}  ${ic}${disk2}${reset}\n"
+[ -n "$disk3" ] && printf "                              ${lc}${di}  ${ic}${disk3}${reset}\n"
+[ -n "$disk4" ] && printf "                              ${lc}${di}  ${ic}${disk4}${reset}\n"
+[ -n "$disk5" ] && printf "                              ${lc}${di}  ${ic}${disk5}${reset}\n"
+
+# Color bar (if we have disks, otherwise it's already printed above)
+[ -n "$disk1" ] && printf "${c0}                       ${lc}${ci}  ${red}███${green}███${yellow}███${blue}███${magenta}███${cyan}███${reset}\n"

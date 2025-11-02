@@ -5,6 +5,7 @@ This remix includes custom features:
 - GPU detection with VRAM usage and percentage
 - CPU, Shell, Window Manager, and Terminal detection
 - Memory display in GiB instead of MiB
+- Disk usage display showing used/free GB for all mounted drives
 - Custom MC cube ASCII art in teal with bright purple "MC" signature
 - Fixed ANSI color code rendering
 
